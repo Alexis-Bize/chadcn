@@ -7,16 +7,17 @@
 
 'use client';
 
-import { Button } from './components/ui/button';
-import { useLazyDialog } from './hooks/use-lazy-dialog';
-import { LazyDialogProvider } from './providers/lazy-dialog';
+import { Button } from '../../../app/components/ui/button';
+import { useLazyDialog } from '../hooks/use-lazy-dialog';
+import { dispatchAppEvent } from '../modules/events';
+import { LazyDialogProvider } from '../providers/lazy-dialog';
 
 //#region component
 
 const LazyDialogExample = () => {
   //#region hooks
 
-  const { openDialog, closeDialog, isOpen, dialog, LazyDialog } = useLazyDialog();
+  const { openDialog, closeDialog, isOpen, dialog } = useLazyDialog();
 
   //#endregion
   //#region handlers
@@ -35,6 +36,24 @@ const LazyDialogExample = () => {
     openDialog('without-custom-props');
   };
 
+  const handleOpenWithoutPropsEventBased = () => {
+    dispatchAppEvent('dialog:show', {
+      type: 'without-custom-props',
+    });
+  };
+
+  const handleOpenWithPropsEventBased = () => {
+    dispatchAppEvent('dialog:show', {
+      type: 'with-custom-props',
+      props: {
+        onConfirm: () => {
+          alert('Confirmed via event!');
+          closeDialog();
+        },
+      },
+    });
+  };
+
   //#endregion
   //#region render
 
@@ -45,12 +64,15 @@ const LazyDialogExample = () => {
         <Button onClick={handleOpenWithProps}>Open Dialog with Props</Button>
         <Button onClick={handleOpenWithoutProps}>Open Dialog without Props</Button>
       </div>
+      <div className="space-x-2">
+        <Button onClick={handleOpenWithoutPropsEventBased}>Open Dialog without Props (Event Based)</Button>
+        <Button onClick={handleOpenWithPropsEventBased}>Open Dialog with Props (Event Based)</Button>
+      </div>
       <div className="text-sm text-gray-600">
         <p>Current dialog type: {dialog?.type || 'None'}</p>
         <p>Is dialog open: {isOpen ? 'Yes' : 'No'}</p>
         <p>Has props: {dialog?.props && Object.keys(dialog.props).length > 0 ? 'Yes' : 'No'}</p>
       </div>
-      {LazyDialog}
     </div>
   );
 

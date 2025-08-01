@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { DialogContent } from '../../components/ui/dialog';
+import { DialogContent } from '../../../../app/components/ui/dialog';
 import type { LazyDialogProps, LazyDialogType } from './config/dialogs.types';
 
 //#region typings
@@ -21,7 +21,6 @@ export type LazyDialogState<T extends LazyDialogType = LazyDialogType> = {
 } | null;
 
 export type LazyDialogContextType = {
-  LazyDialog: React.ReactNode;
   dialog: LazyDialogState;
   isOpen: boolean;
   closeDialog: () => void;

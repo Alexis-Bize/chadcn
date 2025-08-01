@@ -1,4 +1,4 @@
-import { Button } from '@/registry/lazy-dialog/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { cn } from '@/lib/utils';
 
 export function OpenInV0Button({ name, className }: { name: string } & React.ComponentProps<typeof Button>) {

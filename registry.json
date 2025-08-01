@@ -1,78 +1,51 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "acme",
-  "homepage": "https://acme.com",
+  "name": "chadcn",
+  "homepage": "https://github.com/alexis-bize/chadcn",
   "items": [
     {
-      "name": "hello-world",
-      "type": "registry:component",
-      "title": "Hello World",
-      "description": "A simple hello world component",
-      "registryDependencies": ["button"],
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "lazy-dialog",
+      "type": "registry:block",
+      "title": "Lazy Dialog",
+      "description": "A flexible and type-safe lazy dialog system for React applications that supports both dialogs with and without custom props.",
+      "registryDependencies": ["dialog", "button"],
       "files": [
         {
-          "path": "registry/new-york/blocks/hello-world/hello-world.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "example-form",
-      "type": "registry:component",
-      "title": "Example Form",
-      "description": "A contact form with Zod validation.",
-      "dependencies": ["zod"],
-      "registryDependencies": ["button", "input", "label", "textarea", "card"],
-      "files": [
-        {
-          "path": "registry/new-york/blocks/example-form/example-form.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
-      "name": "complex-component",
-      "type": "registry:component",
-      "title": "Complex Component",
-      "description": "A complex component showing hooks, libs and components.",
-      "registryDependencies": ["card"],
-      "files": [
-        {
-          "path": "registry/new-york/blocks/complex-component/page.tsx",
-          "type": "registry:page",
-          "target": "app/pokemon/page.tsx"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-card.tsx",
+          "path": "registry/lazy-dialog/config/config.ts",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/components/pokemon-image.tsx",
+          "path": "registry/lazy-dialog/config/config.types.ts",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/complex-component/lib/pokemon.ts",
-          "type": "registry:lib"
-        },
-        {
-          "path": "registry/new-york/blocks/complex-component/hooks/use-pokemon.ts",
+          "path": "registry/lazy-dialog/hooks/use-lazy-dialog.tsx",
           "type": "registry:hook"
-        }
-      ]
-    },
-    {
-      "name": "example-with-css",
-      "type": "registry:component",
-      "title": "Example with CSS",
-      "description": "A login form with a CSS file.",
-      "files": [
+        },
         {
-          "path": "registry/new-york/blocks/example-with-css/example-card.tsx",
+          "path": "registry/lazy-dialog/providers/lazy-dialog/index.tsx",
           "type": "registry:component"
         },
         {
-          "path": "registry/new-york/blocks/example-with-css/example-card.css",
+          "path": "registry/lazy-dialog/providers/lazy-dialog/shared.types.ts",
           "type": "registry:component"
+        },
+        {
+          "path": "registry/lazy-dialog/providers/lazy-dialog/partials/with-custom-props.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/lazy-dialog/providers/lazy-dialog/partials/without-custom-props.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/lazy-dialog/example-usage.tsx",
+          "type": "registry:file"
+        },
+        {
+          "path": "registry/lazy-dialog/README.md",
+          "type": "registry:file"
         }
       ]
     }

@@ -5,7 +5,7 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Button } from '@/registry/lazy-dialog/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import type { DialogContentProps } from '@/registry/lazy-dialog/providers/lazy-dialog/shared.types';
 
 import {
@@ -15,7 +15,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/registry/lazy-dialog/components/ui/dialog';
+} from '@/app/components/ui/dialog';
 
 //#region component
 

@@ -5,17 +5,11 @@
  * https://opensource.org/licenses/MIT
  */
 
-import { Button } from '@/registry/lazy-dialog/components/ui/button';
+import { Button } from '@/app/components/ui/button';
 import { useLazyDialog } from '@/registry/lazy-dialog/hooks/use-lazy-dialog';
 import type { DialogContentProps } from '@/registry/lazy-dialog/providers/lazy-dialog/shared.types';
 
-import {
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/registry/lazy-dialog/components/ui/dialog';
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/app/components/ui/dialog';
 
 //#region typings
 

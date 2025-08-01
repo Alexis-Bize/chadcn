@@ -7,17 +7,20 @@
 
 'use client';
 
-import { createContext, useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { safeAsync } from '@zeny/safe-async';
+import { createPortal } from 'react-dom';
 import { config } from './config';
-import { Dialog } from '@/registry/lazy-dialog/components/ui/dialog';
+import { safeAsync } from '@zeny/safe-async';
+import { Dialog } from '@/app/components/ui/dialog';
+import { isBrowser } from '../../modules/helpers/environment';
+import { createContext, useCallback, useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from 'react';
+import { listenAppEvent, removeAppEvent, type AppCustomEvent } from '../../modules/events';
 import type { LazyDialogType } from './config/dialogs.types';
 
 import type {
-  LazyDialogPropsForType,
-  LazyDialogContextType,
-  LazyDialogPropsWithContentProps,
   LazyDialogState,
+  LazyDialogContextType,
+  LazyDialogPropsForType,
+  LazyDialogPropsWithContentProps,
 } from './shared.types';
 
 //#region context
@@ -70,10 +73,26 @@ const LazyDialogProvider = ({ children }: { children: ReactNode }) => {
   //#endregion
   //#region effects
 
+  useLayoutEffect(() => {
+    const onShow = (event: AppCustomEvent<'dialog:show'>) => {
+      const { detail } = event;
+      const { type, props } = detail;
+      openDialog(type, props);
+    };
+
+    const onClose = () => closeDialog();
+
+    listenAppEvent('dialog:show', onShow);
+    listenAppEvent('dialog:close', onClose);
+
+    return () => {
+      removeAppEvent('dialog:show', onShow);
+      removeAppEvent('dialog:close', onClose);
+    };
+  }, [openDialog, closeDialog]);
+
   useEffect(() => {
-    if (dialog !== null) {
-      lazyLoadDialog();
-    }
+    if (dialog !== null) lazyLoadDialog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dialog]);
 
@@ -84,7 +103,7 @@ const LazyDialogProvider = ({ children }: { children: ReactNode }) => {
         setIsClosing(false);
       };
 
-      const dialogElement = document.querySelector('[data-state="closed"]');
+      const dialogElement = document.querySelector('[data-slot="dialog-content"]');
       if (dialogElement !== null) {
         dialogElement.addEventListener('transitionend', handleTransitionEnd, { once: true });
         return () => dialogElement.removeEventListener('transitionend', handleTransitionEnd);
@@ -108,21 +127,33 @@ const LazyDialogProvider = ({ children }: { children: ReactNode }) => {
     [DialogContent, dialog, closeDialog],
   );
 
+  const DialogPortal = useMemo(
+    () =>
+      isBrowser() === true && (dialog !== null || DialogContent !== null)
+        ? createPortal(LazyDialog, document.body)
+        : null,
+    [LazyDialog, dialog, DialogContent],
+  );
+
   const contextMemorizedValue = useMemo<LazyDialogContextType>(
     () => ({
       dialog,
       openDialog,
       closeDialog,
       isOpen: dialog !== null,
-      LazyDialog,
     }),
-    [dialog, openDialog, LazyDialog, closeDialog],
+    [dialog, openDialog, closeDialog],
   );
 
   //#endregion
   //#region render
 
-  return <LazyDialogContext.Provider value={contextMemorizedValue}>{children}</LazyDialogContext.Provider>;
+  return (
+    <LazyDialogContext.Provider value={contextMemorizedValue}>
+      {children}
+      {DialogPortal}
+    </LazyDialogContext.Provider>
+  );
 
   //#endregion
 };
